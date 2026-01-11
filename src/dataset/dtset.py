@@ -17,9 +17,10 @@ class TrafficFlowDataset(Dataset):
         # Filtramos solo archivos de imagen
         self.img_files = [f for f in os.listdir(img_dir) if f.endswith(('.jpg', '.png', '.jpeg'))]
         
-        # IDs que consideramos "Vehículo Motorizado"
-        # Ajusta esto según tu classes.txt (Ej: 0=Vehicle, 1=Bus, 5=Truck)
-        self.motorized_ids = [0, 1, 4, 5] 
+        # IDs para dataset vehicleDataset (Roboflow)
+        # Todas las clases son vehículos: bicycle, bus, car, motorbike, rickshaw, truck, van
+        # 0: bicycle, 1: bus, 2: car, 3: motorbike, 4: rickshaw, 5: truck, 6: van
+        self.motorized_ids = [0, 1, 2, 3, 4, 5, 6] 
 
     def __len__(self):
         return len(self.img_files)

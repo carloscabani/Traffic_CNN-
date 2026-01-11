@@ -146,13 +146,25 @@ def train(resume=False, checkpoint_path=None):
     # ========================================================================
     # 3. CARGA DE DATOS
     # ========================================================================
-    # IMPORTANTE: Cambia estas rutas según tu estructura de carpetas
-    # Por defecto busca en: IA/data/Intersection-Flow-5K/images/train
-    #                       IA/data/Intersection-Flow-5K/labels/train
+    # IMPORTANTE: Rutas configuradas para Google Colab con dataset vehicleDataset
+    # Si ejecutas localmente, ajusta estas rutas según tu estructura de carpetas
     
-    data_root = os.path.join(root_dir, 'data', 'Intersection-Flow-5K')
-    train_img_dir = os.path.join(data_root, 'images', 'train')
-    train_label_dir = os.path.join(data_root, 'labels', 'train')
+    # Detectar si estamos en Google Colab
+    try:
+        import google.colab
+        IN_COLAB = True
+    except ImportError:
+        IN_COLAB = False
+    
+    if IN_COLAB:
+        # Rutas para Google Colab con dataset vehicleDataset
+        train_img_dir = '/content/train/images'
+        train_label_dir = '/content/train/labels'
+    else:
+        # Rutas por defecto para ejecución local
+        data_root = os.path.join(root_dir, 'data', 'Intersection-Flow-5K')
+        train_img_dir = os.path.join(data_root, 'images', 'train')
+        train_label_dir = os.path.join(data_root, 'labels', 'train')
     
     # Verificar que existan las carpetas
     if not os.path.exists(train_img_dir):
@@ -196,8 +208,14 @@ def train(resume=False, checkpoint_path=None):
     print(f"   - Dispositivo: {device}")
 
     # Crear carpeta para guardar checkpoints
-    checkpoint_dir = os.path.join(root_dir, 'models')
-    os.makedirs(checkpoint_dir, exist_ok=True)
+    if IN_COLAB:
+        # Guardar checkpoints en Google Drive cuando estamos en Colab
+        checkpoint_dir = '/content/drive/MyDrive/Traffic_CNN_Models'
+        os.makedirs(checkpoint_dir, exist_ok=True)
+    else:
+        # Guardar localmente cuando no estamos en Colab
+        checkpoint_dir = os.path.join(root_dir, 'models')
+        os.makedirs(checkpoint_dir, exist_ok=True)
 
     # ========================================================================
     # 5. CARGAR CHECKPOINT (SI SE SOLICITA)
