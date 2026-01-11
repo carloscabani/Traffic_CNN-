@@ -4,3 +4,13 @@ models/
 *.jpg
 *.png
 *.pth
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
